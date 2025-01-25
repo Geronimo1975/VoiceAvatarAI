@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Digital Twin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>AI Digital Twin</h2>
+            <div class="upload-section">
+                <h3>Voice Clone</h3>
+                <button id="record-button" class="button" onclick="startRecording()">Record Voice</button>
+            </div>
+            <div class="upload-section">
+                <h3>Upload Documents</h3>
+                <input type="file" id="file-upload" accept=".pdf" class="file-input">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chat-container" id="chat-container">
+                <!-- Messages will be added here dynamically -->
+            </div>
+            
+            <div class="input-container">
+                <input type="text" id="message-input" class="input-field" 
+                       placeholder="Type your message...">
+                <button id="send-button" class="button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/websocket.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
