@@ -1,9 +1,10 @@
 from langchain_openai import OpenAI
-from langchain.chains import LLMChain
+from langchain.chains import ConversationChain
 from langchain.prompts import PromptTemplate
-from langchain.memory import ConversationBufferWindowMemory
+from langchain.memory import ConversationBufferMemory
 import logging
 import os
+from datetime import datetime
 
 class LangChainService:
     def __init__(self):
@@ -12,35 +13,67 @@ class LangChainService:
                 temperature=0.7,
                 max_tokens=2000
             )
-            self.memory = ConversationBufferWindowMemory(k=5)
-            self.prompt = PromptTemplate(
-                input_variables=["history", "input"],
-                template="Based on the conversation history: {history}\nHuman: {input}\nAI:"
+
+            # Initialize memory with proper configuration
+            self.memory = ConversationBufferMemory(
+                memory_key="chat_history",
+                return_messages=True
             )
-            self.chain = LLMChain(
+
+            # Create a prompt template that matches memory configuration
+            self.prompt = PromptTemplate(
+                input_variables=["chat_history", "input"],
+                template="""
+                Assistant: I am your AI Digital Twin assistant. I help you communicate effectively and naturally.
+
+                Current conversation:
+                {chat_history}
+                Human: {input}
+                Assistant:"""
+            )
+
+            # Initialize conversation chain with correct configuration
+            self.chain = ConversationChain(
                 llm=self.llm,
-                prompt=self.prompt,
                 memory=self.memory,
+                prompt=self.prompt,
                 verbose=True
             )
-            logging.info("LangChain service initialized successfully")
+
+            logging.info("Enhanced LangChain service initialized successfully")
         except Exception as e:
             logging.error(f"LangChain initialization error: {str(e)}")
             raise
 
     def get_response(self, input_text):
-        """Generate AI response"""
+        """Generate AI response with conversational memory"""
         try:
-            response = self.chain.run(input=input_text)
+            # Generate response using the conversation chain
+            response = self.chain.predict(input=input_text)
             return response
         except Exception as e:
             logging.error(f"Error generating response: {str(e)}")
-            return "I apologize, but I'm having trouble processing your request."
+            return "I apologize, but I'm having trouble processing your request. Let me try to help you differently."
 
     def process_document(self, document_text):
-        """Process document content"""
+        """Process document content with context awareness"""
         try:
-            response = self.chain.run(input=f"Please analyze this document: {document_text}")
+            # Get current conversation history
+            history = self.memory.load_memory_variables({})
+
+            # Create document-specific prompt
+            prompt = f"""
+            Based on our previous conversation and this document, provide a detailed analysis:
+
+            Previous conversation:
+            {history.get('chat_history', '')}
+
+            Document content: {document_text}
+
+            Please analyze this document in the context of our discussion.
+            """
+
+            response = self.chain.predict(input=prompt)
             return response
         except Exception as e:
             logging.error(f"Error processing document: {str(e)}")
