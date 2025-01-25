@@ -1,0 +1,50 @@
+Project: AI Digital Twin – Advanced Conversational Agent with Your Voice & Avatar
+🔹 General Description
+This project develops an AI Digital Twin capable of:
+
+📞 Answering phone calls automatically using your cloned voice
+💬 Sending WhatsApp messages in English & German
+🎥 Joining video meetings (Zoom, Teams, Meet) using a digital avatar synchronized with AI responses
+📄 Processing PDF documents uploaded to a "Data" directory for professional interactions
+🤖 Leveraging Llama + LangChain + Hugging Face for advanced conversational AI
+🔄 Using n8n / Make.com / CrewAI for workflow automation and fine-tuning
+💻 Providing a dynamic UI without mandatory login, similar to Replit.com
+🔹 Required Technologies
+🛠 Component	🚀 Technology
+🎙️ Voice Cloning	ElevenLabs
+📹 Digital Avatar	HeyGen API
+☎️ Phone Calls	Twilio Voice API
+💬 WhatsApp Messaging	Twilio WhatsApp API
+🧠 Conversational AI	Llama + LangChain + Hugging Face
+🔄 Automated Workflows	n8n / Make.com / CrewAI
+📂 Document Processing	"Data" Directory + AI for PDF Analysis
+🎥 Video Calls	OBS Studio + HeyGen API
+🖥️ Backend	Python (TypeScript is NOT allowed!)
+🌐 UI	Dynamic structure like Replit.com (no mandatory login)
+🔹 Final Prompt for Replit Agent
+"Create an advanced AI Digital Twin that can answer phone calls, send WhatsApp messages, and join video meetings using the user's voice and avatar.
+
+🔴 IMPORTANT: All files must be in Python. Do NOT use TypeScript!
+🔴 The UI must have a dynamic structure, without mandatory login at startup, similar to Replit.com.
+
+🔹 Technical Integration:
+
+📞 Phone Calls → Twilio Voice API + ElevenLabs for AI-driven responses using the user's voice
+💬 WhatsApp Messaging → Twilio WhatsApp API + Llama for intelligent conversations in English & German
+🎥 Video Calls → HeyGen API + OBS Studio for a realistic digital avatar synchronized with AI responses
+🧠 Conversational AI → Llama + LangChain + Hugging Face for fluent, natural AI conversations
+🔄 Automated Workflows → n8n / Make.com / CrewAI for managing AI interactions and fine-tuning responses
+📂 "Data" Directory → Users can upload PDF files, and the AI will process them to generate professional responses
+🔹 Additional Requirements:
+
+🚀 The AI must have conversational memory and continuously improve its responses
+⚡ The system architecture must be scalable and flexible for future expansions
+🖥️ The backend must be written in Python (TypeScript is strictly NOT allowed!)
+🌐 The UI must be dynamic and function without requiring initial authentication, similar to Replit.com
+🔹 Next Steps
+1️⃣ Implement voice cloning (ElevenLabs) & digital avatar (HeyGen API)
+2️⃣ Set up Twilio API for phone calls & WhatsApp messaging
+3️⃣ Integrate conversational AI (Llama + LangChain + Hugging Face)
+4️⃣ Connect workflow automation (n8n / Make.com / CrewAI)
+5️⃣ Develop the "Data" directory for PDF document analysis
+6️⃣ Build the UI with a Replit.com-like dynamic structure (no mandatory login)
