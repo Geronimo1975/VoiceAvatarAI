@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const messageInput = document.querySelector('#message-input');
     const sendButton = document.querySelector('#send-button');
     const fileUpload = document.querySelector('#file-upload');
-    
+
     // Initialize WebSocket connection
     initializeWebSocket();
 
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return null;
     }
 
-    function acceptCookies() {
+    window.acceptCookies = function() {
         setCookie('cookie_consent', 'accepted', 365);
         document.getElementById('cookie-consent').style.display = 'none';
     }
