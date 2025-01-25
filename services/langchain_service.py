@@ -2,14 +2,12 @@ from langchain_openai import OpenAI
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
-from services.crewai_service import CrewAIService
 import logging
 import os
 
 class LangChainService:
     def __init__(self):
         try:
-            # Initialize with OpenAI for better compatibility
             self.llm = OpenAI(
                 temperature=0.7,
                 max_tokens=2000
@@ -25,29 +23,24 @@ class LangChainService:
                 memory=self.memory,
                 verbose=True
             )
-            self.crew_service = CrewAIService(llm=self.llm)
             logging.info("LangChain service initialized successfully")
         except Exception as e:
             logging.error(f"LangChain initialization error: {str(e)}")
             raise
 
     def get_response(self, input_text):
-        """Generate AI response using CrewAI workflow"""
+        """Generate AI response"""
         try:
-            context = {
-                "conversation_history": self.memory.load_memory_variables({}),
-                "current_input": input_text
-            }
-            response = self.crew_service.process_conversation(input_text, context)
+            response = self.chain.run(input=input_text)
             return response
         except Exception as e:
             logging.error(f"Error generating response: {str(e)}")
             return "I apologize, but I'm having trouble processing your request."
 
     def process_document(self, document_text):
-        """Process document content using CrewAI workflow"""
+        """Process document content"""
         try:
-            response = self.crew_service.process_document(document_text)
+            response = self.chain.run(input=f"Please analyze this document: {document_text}")
             return response
         except Exception as e:
             logging.error(f"Error processing document: {str(e)}")
