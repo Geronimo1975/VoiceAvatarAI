@@ -4,6 +4,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 import logging
+from services.langchain_service import LangChainService
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -23,6 +24,13 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 db.init_app(app)
 
+# Initialize LangChain service with CrewAI integration
+langchain_service = None
+try:
+    langchain_service = LangChainService()
+except Exception as e:
+    logging.error(f"Error initializing LangChain service: {str(e)}")
+
 # Import routes after app initialization
 from routes import *
 
@@ -39,10 +47,21 @@ def handle_connect():
 
 @socketio.on('message')
 def handle_message(data):
-    logging.info(f'Received message: {data}')
-    # Here we'll integrate with LangChain service for responses
-    response = {"message": "AI response placeholder"}
-    socketio.emit('response', response)
+    try:
+        logging.info(f'Received message: {data}')
+        if not langchain_service:
+            raise Exception("LangChain service not initialized")
+
+        # Process message using CrewAI workflow
+        response = langchain_service.get_response(data['text'])
+        socketio.emit('response', {"message": response})
+
+    except Exception as e:
+        logging.error(f"Error processing message: {str(e)}")
+        socketio.emit('response', {
+            "message": "I apologize, but I'm having trouble processing your request.",
+            "error": True
+        })
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
