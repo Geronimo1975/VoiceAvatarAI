@@ -9,9 +9,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
 <body>
+    <div id="cookie-consent" class="cookie-consent">
+        <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+        <button onclick="acceptCookies()" class="button">Accept</button>
+    </div>
+
     <div class="container">
         <nav class="top-nav">
-            <h1 class="project-title">AI Digital Twin</h1>
+            <div class="nav-left">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <path d="M16 2L2 9L16 16L30 9L16 2Z" fill="currentColor"/>
+                        <path d="M2 23L16 30L30 23V9L16 16L2 9V23Z" fill="currentColor" fill-opacity="0.4"/>
+                    </svg>
+                    <span class="project-title">AI Digital Twin</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#docs" class="nav-link">Documentation</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
         </nav>
 
         <div class="main-content">
@@ -47,6 +65,28 @@
                 </div>
             </main>
         </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>AI Digital Twin</h4>
+                    <p>Advanced conversational AI with voice and avatar capabilities</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="/privacy" class="footer-link">Privacy Policy</a>
+                    <a href="/terms" class="footer-link">Terms of Service</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="/docs" class="footer-link">Documentation</a>
+                    <a href="/contact" class="footer-link">Contact Us</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AI Digital Twin. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
     <script src="{{ url_for('static', filename='js/websocket.js') }}"></script>
