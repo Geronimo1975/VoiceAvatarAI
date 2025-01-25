@@ -1,7 +1,7 @@
 /* Hero Banner */
 .hero-banner {
     padding: 100px 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    background: linear-gradient(135deg, #020b55 0%, #030549 100%);
     color: #ffffff;
 }
 
@@ -18,9 +18,9 @@
 
 /* Chat Interface */
 .chat-interface {
-    background: #ffffff;
+    background: #f5efef;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgb(3, 7, 69, 0.1);
     overflow: hidden;
 }
 
@@ -28,7 +28,7 @@
     height: 400px;
     overflow-y: auto;
     padding: 20px;
-    background: #f8f9fa;
+    background: #c3cfda;
 }
 
 .input-section {
