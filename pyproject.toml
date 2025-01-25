@@ -13,11 +13,25 @@ dependencies = [
     "langchain>=0.3.15",
     "langchain-community>=0.3.15",
     "langchain-core>=0.3.31",
+    "langchain-openai>=0.3.2",
+    "langdetect>=1.0.9",
     "llama-cpp-python>=0.3.6",
     "psycopg2-binary>=2.9.10",
     "pypdf2>=3.0.1",
     "routes>=2.5.1",
+    "sacremoses>=0.1.1",
+    "sentencepiece>=0.2.0",
     "sqlalchemy>=2.0.37",
+    "torch>=2.5.1",
     "transformers>=4.48.1",
     "twilio>=9.4.3",
 ]
+
+[[tool.uv.index]]
+explicit = true
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]
+torchvision = [{ index = "pytorch-cpu", marker = "platform_system == 'Linux'" }]

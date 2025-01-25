@@ -1,6 +1,7 @@
-from langchain_community.llms import OpenAI
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferMemory
+from langchain_openai import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.memory import ConversationBufferWindowMemory
 from services.crewai_service import CrewAIService
 import logging
 import os
@@ -13,9 +14,14 @@ class LangChainService:
                 temperature=0.7,
                 max_tokens=2000
             )
-            self.memory = ConversationBufferMemory()
-            self.conversation = ConversationChain(
+            self.memory = ConversationBufferWindowMemory(k=5)
+            self.prompt = PromptTemplate(
+                input_variables=["history", "input"],
+                template="Based on the conversation history: {history}\nHuman: {input}\nAI:"
+            )
+            self.chain = LLMChain(
                 llm=self.llm,
+                prompt=self.prompt,
                 memory=self.memory,
                 verbose=True
             )
@@ -29,7 +35,7 @@ class LangChainService:
         """Generate AI response using CrewAI workflow"""
         try:
             context = {
-                "conversation_history": self.memory.chat_memory.messages,
+                "conversation_history": self.memory.load_memory_variables({}),
                 "current_input": input_text
             }
             response = self.crew_service.process_conversation(input_text, context)

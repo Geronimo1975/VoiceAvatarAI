@@ -8,13 +8,14 @@ from services.langchain_service import LangChainService
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 class Base(DeclarativeBase):
     pass
 
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Configuration
 app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY", "dev_key")
@@ -24,18 +25,24 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 db.init_app(app)
 
-# Initialize LangChain service with CrewAI integration
+# Initialize services
 langchain_service = None
-try:
-    langchain_service = LangChainService()
-except Exception as e:
-    logging.error(f"Error initializing LangChain service: {str(e)}")
 
-# Import routes after app initialization
-from routes import *
+def init_services():
+    global langchain_service
+    try:
+        langchain_service = LangChainService()
+        logger.info("Services initialized successfully")
+    except Exception as e:
+        logger.error(f"Error initializing services: {str(e)}")
+        return False
+    return True
 
+# Import models and create tables
 with app.app_context():
+    import models  # noqa: F401
     db.create_all()
+    init_services()
 
 @app.route('/')
 def index():
@@ -43,12 +50,12 @@ def index():
 
 @socketio.on('connect')
 def handle_connect():
-    logging.info('Client connected')
+    logger.info('Client connected')
 
 @socketio.on('message')
 def handle_message(data):
     try:
-        logging.info(f'Received message: {data}')
+        logger.info(f'Received message: {data}')
         if not langchain_service:
             raise Exception("LangChain service not initialized")
 
@@ -57,11 +64,11 @@ def handle_message(data):
         socketio.emit('response', {"message": response})
 
     except Exception as e:
-        logging.error(f"Error processing message: {str(e)}")
+        logger.error(f"Error processing message: {str(e)}")
         socketio.emit('response', {
             "message": "I apologize, but I'm having trouble processing your request.",
             "error": True
         })
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True, use_reloader=True, log_output=True)
